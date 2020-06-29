@@ -1,15 +1,14 @@
 ///https://github.com/gee-community/gee_tools
 //https://github.com/kongdd/gee_monkey
-var starting_date = ee.Date('1985-11-01');
+var starting_date = ee.Date('1990-08-01');
 var end_date  = ee.Date('2019-01-01');
-var folderl8 = "Chamelal8"
-var folderl7 = "Chamelal7"
-var folderl5 = "Chamelal5"
-var path = 30
+var folderl8 = "Ayuqila_l8"
+var folderl7 = "Ayuqila_l7"
+var folderl5 = "Ayuqila_l5"
+var path = 29
 var row = 46
-var fc = ee.FeatureCollection('users/aquevedo/chamela');
-var tools = require('users/fitoprincipe/geetools:tools');
-print(tools.options);
+var fc = ee.FeatureCollection('users/aquevedo/Extent_ayuquila');
+var batch = require('users/fitoprincipe/geetools:batch');
 
 function maskL8sr(image) {
   // Bits 3 and 5 are cloud shadow and cloud, respectively.
@@ -74,9 +73,43 @@ var collectionL5 = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
 print('CollectionL8: ', collectionL8);
 print('CollectionL7: ', collectionL7);
 print('CollectionL5: ', collectionL5);
-tools.col2drive(collectionL8, folderl8,{scale:30,region:fc});
-tools.col2drive(collectionL7, folderl7,{scale:30,region:fc});
-tools.col2drive(collectionL5, folderl5,{scale:30,region:fc});
 
+
+
+
+var ndviVis = {
+  min: -1,
+  max: 1,
+  palette: [
+    'FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
+    '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01',
+    '012E01', '011D01', '011301'
+  ],
+};
+
+Map.setCenter(-104.1360,19.6478, 9);
+Map.addLayer(collectionL8.first(), ndviVis, 'NDVI')
+
+/////////To export remove the comments in lines 95 and 114
+/*
+batch.Download.ImageCollection.toDrive(collectionL8, "L8_AYUQUILA", 
+                {scale: 30, 
+                 region: fc, 
+                 maxPixels: 1e12,
+                 type: 'float'})
+
+
+batch.Download.ImageCollection.toDrive(collectionL7, "L7_AYUQUILA", 
+                {scale: 30, 
+                 region: fc, 
+                 maxPixels: 1e12,
+                 type: 'float'})
+                 
+batch.Download.ImageCollection.toDrive(collectionL5, "L5_AYUQUILA", 
+                {scale: 30, 
+                 region: fc, 
+                 maxPixels: 1e12,
+                 type: 'float'})
+*/
 
 
